@@ -17,4 +17,4 @@
 
 4- node server
 
-5- Open localhost:5500 to view the app working.
+Open localhost:5500 to view the app working.
