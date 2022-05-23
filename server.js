@@ -9,7 +9,7 @@ const options = {
   headers: {
     'x-timestamp': Date.now(),
     'x-sent': true
-  }
+  },
 };
 
 app.get('/', (req, res) => {
