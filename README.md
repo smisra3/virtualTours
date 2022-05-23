@@ -1,4 +1,9 @@
-# virtualTours
+## virtualTours
+
+
+# Pre-requisites
+
+1- Must have Node.js and NPM installed on the machine.
 
 # Commands to Run. 
 
