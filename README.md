@@ -6,6 +6,8 @@
 
 2- cd virtualTours
 
+3- git checkout main
+
 3- npm i
 
 4- node server
