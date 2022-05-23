@@ -13,15 +13,15 @@ const options = {
 };
 
 app.get('/', (req, res) => {
-  res.sendFile('3dview.html', options);
+  res.sendFile('index.html', options);
 });
 
-app.get('/OrbitControls.js', (req, res) => {
-  res.sendFile('OrbitControls.js', options);
+app.get('/js/:name', (req, res) => {
+  res.sendFile(`/assets/js/${req.params.name}`, options);
 });
 
-app.get('/:fileName', (req, res) => {
-  res.sendFile(`/assets/${req.params.fileName}`, options);
+app.get('/:name', (req, res) => {
+  res.sendFile(`/assets/images/${req.params.name}`, options);
 });
 
 app.listen(port, () => {
