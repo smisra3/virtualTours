@@ -15,6 +15,6 @@
 
 3- npm i
 
-4- node server
+4- npm run start
 
 Open localhost:5500 to view the app working.
