@@ -12,6 +12,10 @@ const options = {
   },
 };
 
+app.get('/init', (req, res) => {
+  res.sendFile('/canvases/init.html', options);
+});
+
 app.get('/', (req, res) => {
   res.sendFile('index.html', options);
 });
