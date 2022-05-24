@@ -18,3 +18,9 @@
 4- npm run start
 
 Open localhost:5500 to view the app working.
+
+# Routes
+
+1- /
+
+2- /init
