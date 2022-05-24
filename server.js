@@ -16,16 +16,16 @@ app.get('/init', (req, res) => {
   res.sendFile('/canvases/init.html', options);
 });
 
-app.get('/', (req, res) => {
-  res.sendFile('index.html', options);
-});
-
 app.get('/js/:name', (req, res) => {
   res.sendFile(`/assets/js/${req.params.name}`, options);
 });
 
 app.get('/:name', (req, res) => {
   res.sendFile(`/assets/images/${req.params.name}`, options);
+});
+
+app.get('/', (req, res) => {
+  res.sendFile('index.html', options);
 });
 
 app.listen(port, () => {
