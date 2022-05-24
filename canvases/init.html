@@ -2,13 +2,6 @@
 <html>
 
 <head>
-  <style>
-    #c {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-  </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 
@@ -16,19 +9,21 @@
   <canvas id="c"></canvas>
 </body>
 <script>
+  let camera, scene, renderer; 
   function main() {
     const canvas = document.getElementById('c');
-    const renderer = new THREE.WebGLRenderer({ canvas, }); //  WebGLRenderer that uses WebGL to render 3D to the canvas.
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, }); //  WebGLRenderer that uses WebGL to render 3D to the canvas.
+    renderer.setSize(window.innerWidth, window.innerHeight);
 
     const fov = 75;
-    const aspect = 2;  // the canvas default
+    const aspect = window.innerWidth / window.innerHeight;  // the canvas default
     const near = 0.1;
     const far = 5;
-    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);//Those four settings define a "frustum" frustum is the name of a 3d shape that is like a pyramid with the tip sliced off. In other words think of the word "frustum" as another 3D shape like sphere, cube, prism, frustum.
-    camera.position.z = 2;
+    camera = new THREE.PerspectiveCamera(fov, aspect, near, far);//Those four settings define a "frustum" frustum is the name of a 3d shape that is like a pyramid with the tip sliced off. In other words think of the word "frustum" as another 3D shape like sphere, cube, prism, frustum.
+    camera.position.z = 3;
 
     //A Scene in three.js is the root of a form of scene graph. Anything you want three.js to draw needs to be added to the scene
-    const scene = new THREE.Scene();
+    scene = new THREE.Scene();
 
     //Next up we create a BoxGeometry which contains the data for a box. Almost anything we want to display in Three.js needs geometry which defines the vertices that make up our 3D object.
     const boxWidth = 1;
@@ -80,6 +75,13 @@
     }
     render();
   }
-  main()
+  function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+  
+  window.addEventListener('resize', onWindowResize);
+  main();
 </script>
 <html
