@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const app = express()
-const port = 5500;
+const port = 5500; 
 
 const options = {
   root: path.join(__dirname, ''),
