@@ -16,6 +16,10 @@ app.get('/init', (req, res) => {
   res.sendFile('/canvases/init.html', options);
 });
 
+app.get('/simple-room', (req, res) => {
+  res.sendFile('canvases/simpleRoom.html', options);
+});
+
 app.get('/js/:name', (req, res) => {
   res.sendFile(`/assets/js/${req.params.name}`, options);
 });

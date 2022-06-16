@@ -548,21 +548,25 @@ THREE.OrbitControls = function (object, domElement) {
       case scope.keys.UP:
         pan(0, scope.keyPanSpeed);
         scope.update();
+        typeof event.callback === 'function' ? event.callback() : null;
         break;
 
       case scope.keys.BOTTOM:
         pan(0, - scope.keyPanSpeed);
         scope.update();
+        typeof event.callback === 'function' ? event.callback() : null;
         break;
 
       case scope.keys.LEFT:
         pan(scope.keyPanSpeed, 0);
         scope.update();
+        typeof event.callback === 'function' ? event.callback() : null;
         break;
 
       case scope.keys.RIGHT:
         pan(- scope.keyPanSpeed, 0);
         scope.update();
+        typeof event.callback === 'function' ? event.callback() : null;
         break;
 
     }
