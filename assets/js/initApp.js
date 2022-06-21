@@ -26,6 +26,13 @@ window.init = function initateView() {
   controls.maxDistance = 2500;
   controls.keyPanSpeed = 10;
 
+  const geometry = new THREE.SphereBufferGeometry(100, 300, 300);
+  const sphere = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
+    color: 0xffffff,
+    side: THREE.BackSide,
+  }))
+  // scene.add(sphere);
+
   let assetArray = [];
   let t_one = new THREE.TextureLoader().load('outdoor_posx.jpg');
   let t_two = new THREE.TextureLoader().load('outdoor_negx.jpg');
@@ -44,8 +51,12 @@ window.init = function initateView() {
   for (let i = 0; i < 6; i += 1) assetArray[i].side = THREE.BackSide;
 
   let boxGeometry = new THREE.BoxGeometry(8000, 8000, 8000);
-  let box = new THREE.Mesh(boxGeometry, assetArray);
+  let box = new THREE.Mesh(boxGeometry, assetArray, sphere);
   scene.add(box);
+
+  const group = new THREE.Group();
+  // group.add(sphere);
+  scene.add(group);
 
   const intersects = raycaster.intersectObjects(scene.children);
   for (let i = 0; i < intersects.length; i++) {
@@ -63,6 +74,9 @@ window.init = function initateView() {
     requestAnimationFrame(animate);
   }
 
+  let z;
+  let zFinal = 14;
+
   function raycast(e) {
     mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
     mouse.y = - (e.clientY / window.innerHeight) * 2 + 1;
@@ -70,17 +84,16 @@ window.init = function initateView() {
     var intersects = raycaster.intersectObjects(scene.children);
     for (var i = 0; i < intersects.length; i++) {
       console.log(intersects[i]);
-      const materialIndex = intersects[i].face.materialIndex;
+      const { face, point } = intersects[i];
+      const materialIndex = face.materialIndex;
       if (materialIndex === 1) {
-        const event = new KeyboardEvent("keydown", {
-          key: 'ArrowUp',
-          keyCode: 38,
-          code: 'ArrowUp',
-          which: 38,
-          isTrusted: true,
-        });
-        window.dispatchEvent(event);
-        loadBedroom();
+        gsap.to(camera.position, {
+          z: point.z,
+          y: point.y,
+          x: point.x,
+          duration: 1,
+          onComplete: () => loadBedroom(),
+        })
       }
     }
   }
@@ -145,17 +158,21 @@ function initateView2() {
       console.log(intersects[i]);
       const materialIndex = intersects[i].face.materialIndex;
       if (materialIndex === 0) {
-        const event = new KeyboardEvent("keydown", {
-          key: 'ArrowUp',
-          keyCode: 38,
-          code: 'ArrowUp',
-          which: 38,
-          isTrusted: true,
-        });
-        window.dispatchEvent(event);
-        loadMusicRoom();
+        gsap.to(camera.position, {
+          z: intersects[i].point.z,
+          y: intersects[i].point.y,
+          x: intersects[i].point.x,
+          duration: 1,
+          onComplete: () => loadMusicRoom(),
+        })
       } else if (materialIndex === 1) {
-        loadEntrance();
+        gsap.to(camera.position, {
+          z: intersects[i].point.z,
+          y: intersects[i].point.y,
+          x: intersects[i].point.x,
+          duration: 1,
+          onComplete: () => loadEntrance(),
+        })
       }
     }
   };
@@ -207,7 +224,15 @@ const loadMusicRoom = () => {
     for (var i = 0; i < intersects.length; i++) {
       console.log(intersects[i]);
       const materialIndex = intersects[i].face.materialIndex;
-      if (materialIndex === 0) loadBedroom();
+      if (materialIndex === 0) {
+        gsap.to(camera.position, {
+          z: intersects[i].point.z,
+          y: intersects[i].point.y,
+          x: intersects[i].point.x,
+          duration: 1,
+          onComplete: () => loadBedroom(),
+        })
+      }
     }
   };
   renderer.domElement.addEventListener('click', raycast, false);
