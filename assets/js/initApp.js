@@ -6,16 +6,20 @@ window.init = function initateView() {
 
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2();
-
-  function onPointerMove(event) {
-    pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
-    pointer.y = - (event.clientY / window.innerHeight) * 2 + 1;
-  }
-  window.addEventListener('pointermove', onPointerMove);
+  const mouse = new THREE.Vector2();
+  const target = new THREE.Vector2();
+  const windowHalf = new THREE.Vector2( window.innerWidth / 2, window.innerHeight / 2 );
+  
+  const onMouseMove = (event) => {
+    mouse.x = (event.clientX - windowHalf.x);
+    mouse.y = (event.clientY - windowHalf.x);
+  };
+  window.addEventListener('mousemove', onMouseMove, false);
 
   scene = new THREE.Scene;
   camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 45, 30000); //we need a camera. (fov, aspect, near, far)
-  camera.position.set(3900, 1200, 900);
+  camera.position.set(3900, 1200, 50);
+  // camera.position.set(0, 0, 0);
 
   renderer = new THREE.WebGLRenderer({ antialias: true, });
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -27,10 +31,14 @@ window.init = function initateView() {
   controls.keyPanSpeed = 10;
 
   const geometry = new THREE.SphereBufferGeometry(100, 300, 300);
-  const sphere = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
-    color: 0xffffff,
-    side: THREE.BackSide,
-  }))
+  const sphere = new THREE.Mesh(
+    geometry,
+    new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      side: THREE.BackSide,
+      position: 4000
+    }),
+  );
   // scene.add(sphere);
 
   let assetArray = [];
@@ -69,6 +77,10 @@ window.init = function initateView() {
   }
 
   function animate() {
+    target.x = (1 - mouse.x) * 0.002;
+    target.y = (1 - mouse.y) * 0.002;
+    // camera.rotation.x += 0.05 * (target.y - camera.rotation.x);
+    // camera.rotation.y += 0.05 * (target.x - camera.rotation.y);
     raycaster.setFromCamera(pointer, camera);
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
@@ -93,6 +105,9 @@ window.init = function initateView() {
           x: point.x,
           duration: 1,
           onComplete: () => loadBedroom(),
+          onUpdate: () => {
+
+          },
         })
       }
     }
